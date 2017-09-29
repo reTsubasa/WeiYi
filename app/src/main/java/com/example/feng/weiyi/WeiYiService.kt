@@ -3,7 +3,6 @@ package com.example.feng.weiyi
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
@@ -15,7 +14,6 @@ class WeiYiService : AccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
-        Log.e("milan", "服务连接成功")
     }
 
     override fun onInterrupt() {
@@ -33,10 +31,8 @@ class WeiYiService : AccessibilityService() {
                         nexts!![0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                     } else {
                         val answers = rootInActiveWindow?.findAccessibilityNodeInfosByText("抢答")
-//                        answers!![0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                        Log.e("milan", "抢答")
+                        answers!![0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                     }
-
                 }
             }
         }
