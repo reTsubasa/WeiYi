@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeiYi</string>
+    <string name="accessibility_description">辅助微医抢单</string>
 </resources>
