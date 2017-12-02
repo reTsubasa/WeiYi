@@ -1,7 +1,6 @@
 package com.example.feng.weiyi
 
 import android.accessibilityservice.AccessibilityService
-import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
 import android.os.Vibrator
@@ -25,17 +24,22 @@ class WeiYiService : AccessibilityService() {
         Log.e("milan", "onInterrupt")
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("milan", "onDestroy")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     override fun onAccessibilityEvent(accessibilityEvent: AccessibilityEvent?) {
         when (accessibilityEvent?.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
-                if (accessibilityEvent.className == "com.greenline.yihuantong.consult.specialclinic.SpecialConsultDetailActivity") {
-                    Log.e("milan", "consult")
-                } else if (accessibilityEvent.className == "com.greenline.yihuantong.message.gpconsultation.GPConsultationListActivity") {
-                    val nextNodeInfos = rootInActiveWindow?.findAccessibilityNodeInfosByViewId("com.greenline.yihuantong:id/special_layout")
-                    nextNodeInfos!![0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                if (accessibilityEvent.className == "com.greenline.yihuantong.message.gpconsultation.ConsultListActivity") {
+                    val nextNodeInfos = rootInActiveWindow?.findAccessibilityNodeInfosByViewId("com.greenline.yihuantong:id/gh_base_consult_list_special_layout")
+                    if (nextNodeInfos!!.size > 0) {
+                        nextNodeInfos[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                    }
+                    Log.e("milan", "问诊")
                 } else if (accessibilityEvent.className == "com.greenline.yihuantong.consult.specialclinic.SpecialClinicListActivity") {
                     val handleNodeInfos = rootInActiveWindow?.findAccessibilityNodeInfosByViewId("com.greenline.yihuantong:id/tv_accept_order")
                     if (handleNodeInfos!!.size > 0) {
@@ -44,8 +48,12 @@ class WeiYiService : AccessibilityService() {
                         service.vibrate(400)
                     } else {
                         val backNodeInfos = rootInActiveWindow?.findAccessibilityNodeInfosByViewId("com.greenline.yihuantong:id/actionbar_home_btn")
-                        backNodeInfos!![0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                        Log.e("milan", "size: " + backNodeInfos!!.size)
+                        if (backNodeInfos.size > 0) {
+                            backNodeInfos[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                        }
                     }
+                    Log.e("milan", "候诊室")
                 }
             }
         }
